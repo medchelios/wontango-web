@@ -64,25 +64,19 @@ const showSuccess = computed(() => {
     </Head>
 
     <div class="min-h-screen bg-gradient-to-br from-gray-50 to-white">
-        <!-- Header -->
-        <header class="bg-white/80 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-50">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex justify-center items-center py-4">
-                    <img src="/images/logo.jpeg" alt="WontanGo" class="h-24 sm:h-28 lg:h-20 w-auto" />
-                </div>
-            </div>
-        </header>
-
         <!-- Main Content -->
-        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-16">
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-8 lg:pt-8 lg:pb-16">
             <!-- Hero Section -->
             <div class="text-center mb-12 lg:mb-16">
-                <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight">
-                    Commander pour vos 
-                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-gray-800 to-gray-600">
-                        proches en Guinée
-                    </span>
-                </h1>
+                <div class="flex justify-center items-center mb-6">
+                    <img src="/images/logo.jpeg" alt="WontanGo" class="h-16 sm:h-20 lg:h-24 w-auto mr-4" />
+                    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
+                        Commander pour vos 
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-gray-800 to-gray-600">
+                            proches en Guinée
+                        </span>
+                    </h1>
+                </div>
                 <p class="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
                     WontanGo connecte la diaspora guinéenne avec leurs familles. 
                     Commandez des produits et faites-les livrer directement chez vos proches.
@@ -275,24 +269,5 @@ const showSuccess = computed(() => {
                 </div>
                 </div>
             </main>
-
-        <!-- Footer -->
-        <footer class="bg-white border-t border-gray-200 mt-16">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                <div class="text-center">
-                    <div class="flex justify-center items-center mb-4">
-                        <img src="/images/logo.jpeg" alt="WontanGo" class="h-8 w-auto opacity-60" />
-                    </div>
-                    <p class="text-gray-500 text-sm">
-                        © 2024 WontanGo. Tous droits réservés.
-                    </p>
-                    <p class="text-gray-400 text-xs mt-2">
-                        Connecter la diaspora guinéenne avec leurs familles
-                    </p>
-                    
-                    
-                </div>
-        </div>
-        </footer>
     </div>
 </template>
