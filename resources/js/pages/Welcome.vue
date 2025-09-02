@@ -10,20 +10,40 @@ const isSubmitted = ref(false);
 const submitForm = async () => {
     isSubmitting.value = true;
     
-    // Simuler l'envoi du formulaire
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    isSubmitted.value = true;
-    isSubmitting.value = false;
-    
-    // Reset form
-    email.value = '';
-    feedback.value = '';
-    
-    // Reset success message after 5 seconds
-    setTimeout(() => {
-        isSubmitted.value = false;
-    }, 5000);
+    try {
+        const response = await fetch('/leads', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
+            },
+            body: JSON.stringify({
+                email: email.value,
+                feedback: feedback.value,
+            }),
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            isSubmitted.value = true;
+            // Reset form
+            email.value = '';
+            feedback.value = '';
+            
+            // Reset success message after 5 seconds
+            setTimeout(() => {
+                isSubmitted.value = false;
+            }, 5000);
+        } else {
+            alert(data.message || 'Une erreur est survenue');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Une erreur est survenue. Veuillez réessayer.');
+    } finally {
+        isSubmitting.value = false;
+    }
 };
 </script>
 
@@ -34,66 +54,16 @@ const submitForm = async () => {
     </Head>
 
     <div class="min-h-screen bg-white">
-        <!-- Logo Section -->
-        <section class="py-20">
-            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <img src="/images/logo.jpeg" alt="WontanGo" class="mx-auto mb-8 max-w-xs" />
-                <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-                    Commander pour vos proches en Guinée
-                </h1>
-                <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-                    WontanGo est la plateforme qui connecte la diaspora guinéenne avec leurs familles. 
-                    Commandez des produits et faites-les livrer directement chez vos proches en Guinée.
-                </p>
-            </div>
-        </section>
-
-        <!-- Concept Section -->
-        <section class="py-16 bg-gray-50">
-            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-12">
-                    <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
-                        Comment ça marche
-                    </h2>
-                </div>
-
-                <div class="grid md:grid-cols-3 gap-8">
-                    <div class="text-center">
-                        <div class="w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <span class="text-xl font-bold text-white">1</span>
-                        </div>
-                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Commandez en ligne</h3>
-                        <p class="text-gray-600">Parcourez notre catalogue et passez votre commande depuis votre pays de résidence</p>
-                    </div>
-
-                    <div class="text-center">
-                        <div class="w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <span class="text-xl font-bold text-white">2</span>
-                        </div>
-                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Nous livrons</h3>
-                        <p class="text-gray-600">Notre équipe locale s'occupe de la livraison chez vos proches</p>
-                    </div>
-
-                    <div class="text-center">
-                        <div class="w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <span class="text-xl font-bold text-white">3</span>
-                        </div>
-                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Vos proches reçoivent</h3>
-                        <p class="text-gray-600">Livraison sécurisée avec notification de confirmation</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Contact Form Section -->
+        <!-- Contact Form Section - First Priority -->
         <section class="py-20">
             <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-12">
-                    <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
+                    <img src="/images/logo.jpeg" alt="WontanGo" class="mx-auto mb-8 max-w-xs" />
+                    <h1 class="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
                         Soyez parmi les premiers
-                    </h2>
+                    </h1>
                     <p class="text-lg text-gray-600">
-                        Inscrivez-vous pour être informé du lancement
+                        Inscrivez-vous pour être informé du lancement de WontanGo
                     </p>
                 </div>
 
@@ -142,6 +112,45 @@ const submitForm = async () => {
                 </div>
             </div>
         </section>
+
+        <!-- Concept Section -->
+        <section class="py-16 bg-gray-50">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
+                        Comment ça marche
+                    </h2>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-xl font-bold text-white">1</span>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Commandez en ligne</h3>
+                        <p class="text-gray-600">Parcourez notre catalogue et passez votre commande depuis votre pays de résidence</p>
+                    </div>
+
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-xl font-bold text-white">2</span>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Nous livrons</h3>
+                        <p class="text-gray-600">Notre équipe locale s'occupe de la livraison chez vos proches</p>
+                    </div>
+
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-xl font-bold text-white">3</span>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Vos proches reçoivent</h3>
+                        <p class="text-gray-600">Livraison sécurisée avec notification de confirmation</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
 
         <!-- Footer -->
         <footer class="bg-gray-100 py-8">
