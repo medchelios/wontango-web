@@ -25,17 +25,27 @@ export default defineConfig({
         }),
     ],
     build: {
+        target: 'es2015',
+        minify: 'esbuild',
         rollupOptions: {
-            external: (id) => {
-                // Exclure @vueuse/core des externals si nécessaire
-                return false;
+            output: {
+                manualChunks: {
+                    vendor: ['vue', '@inertiajs/vue3'],
+                    utils: ['@vueuse/core'],
+                },
             },
         },
-        commonjsOptions: {
-            include: [/node_modules/],
-        },
+        chunkSizeWarningLimit: 1000,
+        sourcemap: false,
     },
     optimizeDeps: {
         include: ['@vueuse/core'],
+        force: true,
+    },
+    server: {
+        hmr: false,
+    },
+    esbuild: {
+        target: 'es2015',
     },
 });

@@ -3,6 +3,8 @@
     "type": "module",
     "scripts": {
         "build": "vite build",
+        "build:prod": "NODE_OPTIONS='--max-old-space-size=4096' vite build",
+        "build:light": "NODE_OPTIONS='--max-old-space-size=2048' vite build --mode production",
         "build:ssr": "vite build && vite build --ssr",
         "dev": "vite",
         "format": "prettier --write resources/",
