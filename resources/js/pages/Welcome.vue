@@ -1,54 +1,47 @@
 <script setup lang="ts">
-import { Head } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import { Head, useForm } from '@inertiajs/vue3';
+import { ref, computed } from 'vue';
 
-const email = ref('');
-const feedback = ref('');
-const isSubmitting = ref(false);
+const props = defineProps<{
+    flash?: {
+        success?: string;
+        error?: string;
+    };
+}>();
+
 const isSubmitted = ref(false);
 
-const submitForm = async () => {
-    isSubmitting.value = true;
-    
-    try {
-        const response = await fetch('/leads', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
-            },
-            body: JSON.stringify({
-                email: email.value,
-                feedback: feedback.value,
-            }),
-        });
+const form = useForm({
+    email: '',
+    feedback: '',
+});
 
-        const data = await response.json();
-
-        if (data.success) {
+const submitForm = () => {
+    form.post('/leads', {
+        onSuccess: () => {
             isSubmitted.value = true;
-            // Reset form
-            email.value = '';
-            feedback.value = '';
+            form.reset();
             
             // Reset success message after 5 seconds
             setTimeout(() => {
                 isSubmitted.value = false;
             }, 5000);
-        } else {
-            alert(data.message || 'Une erreur est survenue');
+        },
+        onError: (errors) => {
+            console.error('Validation errors:', errors);
         }
-    } catch (error) {
-        console.error('Error:', error);
-        alert('Une erreur est survenue. Veuillez réessayer.');
-    } finally {
-        isSubmitting.value = false;
-    }
+    });
 };
+
+// Show success message from flash or local state
+const showSuccess = computed(() => {
+    return isSubmitted.value || props.flash?.success;
+});
 </script>
 
 <template>
-    <Head title="WontanGo - Commander pour vos proches en Guinée">
+    <Head>
+        <title>WontanGo - Commander pour vos proches en Guinée</title>
         <link rel="preconnect" href="https://rsms.me/" />
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
     </Head>
@@ -101,11 +94,14 @@ const submitForm = async () => {
                                 <input
                                     type="email"
                                     id="email"
-                                    v-model="email"
+                                    v-model="form.email"
                                     required
                                     class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-all duration-200 text-gray-900 placeholder-gray-500"
                                     placeholder="votre@email.com"
                                 />
+                                <div v-if="form.errors.email" class="text-red-600 text-sm mt-1">
+                                    {{ form.errors.email }}
+                                </div>
                             </div>
 
                             <div>
@@ -114,19 +110,22 @@ const submitForm = async () => {
                                 </label>
                                 <textarea
                                     id="feedback"
-                                    v-model="feedback"
+                                    v-model="form.feedback"
                                     rows="4"
                                     class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-all duration-200 text-gray-900 placeholder-gray-500 resize-none"
                                     placeholder="Dites-nous quels types de produits vous aimeriez commander pour vos proches en Guinée..."
                                 ></textarea>
+                                <div v-if="form.errors.feedback" class="text-red-600 text-sm mt-1">
+                                    {{ form.errors.feedback }}
+                                </div>
                             </div>
 
                             <button
                                 type="submit"
-                                :disabled="isSubmitting"
+                                :disabled="form.processing"
                                 class="w-full bg-gray-900 text-white py-4 px-6 rounded-xl font-semibold hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-[1.02] active:scale-[0.98]"
                             >
-                                <span v-if="isSubmitting" class="flex items-center justify-center">
+                                <span v-if="form.processing" class="flex items-center justify-center">
                                     <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                                         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -141,12 +140,21 @@ const submitForm = async () => {
                                 </span>
                             </button>
 
-                            <div v-if="isSubmitted" class="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-xl">
+                            <div v-if="showSuccess" class="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-xl">
                                 <div class="flex items-center">
                                     <svg class="w-5 h-5 mr-2 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                                     </svg>
-                                    <p class="font-medium">Merci ! Nous vous tiendrons informé du lancement.</p>
+                                    <p class="font-medium">{{ props.flash?.success || 'Merci ! Nous vous tiendrons informé du lancement.' }}</p>
+                                </div>
+                            </div>
+                            
+                            <div v-if="props.flash?.error" class="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-xl">
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 mr-2 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    <p class="font-medium">{{ props.flash.error }}</p>
                                 </div>
                             </div>
                         </form>
