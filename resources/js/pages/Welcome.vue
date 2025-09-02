@@ -229,6 +229,35 @@ const showSuccess = computed(() => {
                             </div>
                         </div>
 
+                        <!-- Séparateur -->
+                        <div class="my-8 border-t border-gray-200"></div>
+
+                        <!-- Service disponible -->
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-shrink-0">
+                                <div class="w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center shadow-lg">
+                                    <span class="text-lg font-bold text-white">4</span>
+                                </div>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-lg font-semibold text-gray-900 mb-2">Service disponible</h3>
+                                <p class="text-gray-600 leading-relaxed mb-3">
+                                    ColisMartGo : livraison en Guinée
+                                </p>
+                                <a 
+                                    href="https://colismartgo.com/" 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    class="inline-flex items-center text-yellow-600 hover:text-yellow-700 font-medium transition-colors duration-200"
+                                >
+                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                    </svg>
+                                    Découvrir
+                                </a>
+                            </div>
+                        </div>
+
                         <!-- Trust indicators -->
                         <div class="mt-8 pt-8 border-t border-gray-200">
                             <div class="grid grid-cols-2 gap-4 text-center">
@@ -260,6 +289,8 @@ const showSuccess = computed(() => {
                     <p class="text-gray-400 text-xs mt-2">
                         Connecter la diaspora guinéenne avec leurs familles
                     </p>
+                    
+                    
                 </div>
         </div>
         </footer>
