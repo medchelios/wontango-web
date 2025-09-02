@@ -182,7 +182,7 @@ const showSuccess = computed(() => {
                                     </div>
                                 </div>
                                 <div class="flex-1 flex flex-col justify-center">
-                                    <h3 class="text-lg font-bold text-gray-900 mb-3">Commandez facilement</h3>
+                                    <h3 class="text-lg font-bold text-gray-900 mb-2">Commandez facilement</h3>
                                     <p class="text-sm text-gray-600 leading-relaxed flex-1">
                                         Parcourez notre catalogue et sélectionnez les produits que vous souhaitez envoyer à vos proches en Guinée.
                                     </p>
@@ -196,7 +196,7 @@ const showSuccess = computed(() => {
                                     </div>
                                 </div>
                                 <div class="flex-1 flex flex-col justify-center">
-                                    <h3 class="text-lg font-bold text-gray-900 mb-3">Livraison rapide</h3>
+                                    <h3 class="text-lg font-bold text-gray-900 mb-2">Livraison rapide</h3>
                                     <p class="text-sm text-gray-600 leading-relaxed flex-1">
                                         Notre équipe locale s'occupe de la livraison avec suivi en temps réel jusqu'à destination en Guinée.
                                     </p>
@@ -210,7 +210,7 @@ const showSuccess = computed(() => {
                                     </div>
                                 </div>
                                 <div class="flex-1 flex flex-col justify-center">
-                                    <h3 class="text-lg font-bold text-gray-900 mb-3">Confirmation garantie</h3>
+                                    <h3 class="text-lg font-bold text-gray-900 mb-2">Confirmation garantie</h3>
                                     <p class="text-sm text-gray-600 leading-relaxed flex-1">
                                         Recevez une confirmation avec photo dès que vos proches ont reçu leur commande en Guinée.
                                     </p>
