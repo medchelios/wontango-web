@@ -12,8 +12,10 @@ Route::get('dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-// Lead capture route
-Route::post('/leads', [LeadController::class, 'store'])->name('leads.store');
+// Lead capture route with rate limiting
+Route::post('/leads', [LeadController::class, 'store'])
+    ->middleware(['throttle:5,1']) // 5 tentatives par minute
+    ->name('leads.store');
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';

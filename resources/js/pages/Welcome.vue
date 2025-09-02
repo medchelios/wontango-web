@@ -17,6 +17,23 @@ const form = useForm({
 });
 
 const submitForm = () => {
+    // Validation côté client
+    if (!form.email || !form.email.includes('@')) {
+        form.setError('email', 'Veuillez entrer une adresse email valide.');
+        return;
+    }
+
+    if (form.feedback && form.feedback.length > 1000) {
+        form.setError('feedback', 'Le feedback ne peut pas dépasser 1000 caractères.');
+        return;
+    }
+
+    // Nettoyage des données côté client
+    form.email = form.email.toLowerCase().trim();
+    if (form.feedback) {
+        form.feedback = form.feedback.trim();
+    }
+
     form.post('/leads', {
         onSuccess: () => {
             isSubmitted.value = true;
