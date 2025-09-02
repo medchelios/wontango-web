@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('leads', function (Blueprint $table) {
             $table->id();
-            $table->string('email')->unique();
+            $table->string('email');
             $table->text('feedback')->nullable();
             $table->string('ip_address')->nullable();
             $table->string('user_agent')->nullable();

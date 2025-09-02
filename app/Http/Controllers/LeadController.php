@@ -25,10 +25,8 @@ class LeadController extends Controller
         $request->validate([
             'email' => [
                 'required',
-                'email:rfc,dns',
-                'max:255',
-                'unique:leads,email',
-                'regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/'
+                'email:rfc',
+                'max:255'
             ],
             'feedback' => [
                 'nullable',
@@ -38,22 +36,25 @@ class LeadController extends Controller
             ],
         ], [
             'email.email' => 'Veuillez entrer une adresse email valide.',
-            'email.unique' => 'Cette adresse email est déjà enregistrée.',
-            'email.regex' => 'Format d\'email invalide.',
             'feedback.regex' => 'Le feedback contient des caractères non autorisés.',
         ]);
 
         try {
-            // Nettoyage des données
             $email = strtolower(trim($request->email));
             $feedback = $request->feedback ? strip_tags(trim($request->feedback)) : null;
 
-            // Vérification supplémentaire de l'email
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 return back()->withErrors(['email' => 'Adresse email invalide.']);
             }
 
-            $lead = Lead::create([
+            $existingCount = Lead::where('email', $email)->count();
+            if ($existingCount >= 3) {
+                return back()->withErrors([
+                    'email' => 'Vous avez déjà soumis cette adresse email 3 fois maximum.'
+                ]);
+            }
+
+            Lead::create([
                 'email' => $email,
                 'feedback' => $feedback,
                 'ip_address' => $request->ip(),
