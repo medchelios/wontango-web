@@ -1,18 +1,3 @@
-<script setup lang="ts">
-import WelcomeFooter from '@/components/WelcomeFooter.vue';
-import WelcomeForm from '@/components/WelcomeForm.vue';
-import WelcomeHeader from '@/components/WelcomeHeader.vue';
-import WelcomeSteps from '@/components/WelcomeSteps.vue';
-import { Head } from '@inertiajs/vue3';
-
-const props = defineProps<{
-    flash?: {
-        success?: string;
-        error?: string;
-    };
-}>();
-</script>
-
 <template>
     <Head>
         <title>WontanGo - Commander pour vos proches en Guinée</title>
@@ -33,3 +18,18 @@ const props = defineProps<{
         </main>
     </div>
 </template>
+
+<script setup lang="ts">
+import WelcomeFooter from '@/components/WelcomeFooter.vue';
+import WelcomeForm from '@/components/WelcomeForm.vue';
+import WelcomeHeader from '@/components/WelcomeHeader.vue';
+import WelcomeSteps from '@/components/WelcomeSteps.vue';
+import { Head } from '@inertiajs/vue3';
+
+const props = defineProps<{
+    flash?: {
+        success?: string;
+        error?: string;
+    };
+}>();
+</script>
