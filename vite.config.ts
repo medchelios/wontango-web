@@ -24,4 +24,18 @@ export default defineConfig({
             },
         }),
     ],
+    build: {
+        rollupOptions: {
+            external: (id) => {
+                // Exclure @vueuse/core des externals si nécessaire
+                return false;
+            },
+        },
+        commonjsOptions: {
+            include: [/node_modules/],
+        },
+    },
+    optimizeDeps: {
+        include: ['@vueuse/core'],
+    },
 });
