@@ -26,12 +26,12 @@ export default defineConfig({
     ],
     build: {
         target: 'es2015',
-        minify: 'esbuild',
+        minify: 'terser', // Utiliser terser au lieu d'esbuild pour réduire la charge
         rollupOptions: {
+            maxParallelFileOps: 1, // Réduire le parallélisme pour économiser les ressources
             output: {
                 manualChunks: {
                     vendor: ['vue', '@inertiajs/vue3'],
-                    utils: ['@vueuse/core'],
                 },
             },
         },
@@ -47,5 +47,11 @@ export default defineConfig({
     },
     esbuild: {
         target: 'es2015',
+        // Limiter le parallélisme d'esbuild
+        logLevel: 'error',
+    },
+    // Limiter le parallélisme global
+    worker: {
+        format: 'es',
     },
 });
