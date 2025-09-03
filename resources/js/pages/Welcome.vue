@@ -11,7 +11,9 @@
 
             <div class="grid items-stretch gap-8 lg:grid-cols-2">
                 <WelcomeForm :flash="props.flash" />
-                <WelcomeSteps />
+                <div class="flex items-center justify-center">
+                    <img src="/images/home_img.jpeg" alt="WontanGo - Famille avec produits" class="w-full h-auto rounded-2xl shadow-lg" />
+                </div>
             </div>
 
             <WelcomeFooter />
@@ -23,7 +25,6 @@
 import WelcomeFooter from '@/components/WelcomeFooter.vue';
 import WelcomeForm from '@/components/WelcomeForm.vue';
 import WelcomeHeader from '@/components/WelcomeHeader.vue';
-import WelcomeSteps from '@/components/WelcomeSteps.vue';
 import { Head } from '@inertiajs/vue3';
 
 const props = defineProps<{
