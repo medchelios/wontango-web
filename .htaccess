@@ -1,0 +1,17 @@
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews -Indexes
+    </IfModule>
+
+    RewriteEngine On
+
+    # Rediriger vers HTTPS si nécessaire
+    # RewriteCond %{HTTPS} off
+    # RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+    # Rediriger le domaine racine vers le sous-dossier
+    RewriteRule ^$ public/index.php [L]
+
+    # Rediriger toutes les autres requêtes vers le dossier public
+    RewriteRule ^((?!public/).*)$ public/$1 [L,NC]
+</IfModule>
